@@ -3,7 +3,7 @@
  * @version     1.0 
  * @since       1.0
  */
-class ScrollingStage extends Thread {
+class ScrollingNote extends Thread {
 
   boolean running;
   int wait;
@@ -11,7 +11,7 @@ class ScrollingStage extends Thread {
   int count;
 
   // Constructor
-  ScrollingStage(String s, int w) {
+  ScrollingNote(String s, int w) {
     running = false; // disable running by default
     id      = s;     // name of the instance
     wait    = w;     // how long to wait before repeating thread loop
@@ -69,7 +69,7 @@ class ScrollingStage extends Thread {
   // overriding default "start()"
   void start() {
     running = true;
-    println("ScrollingStage::"+this.id+ " has started. executing every " + wait + "ms");
+    println("ScrollingNote::"+this.id+ " has started. executing every " + wait + "ms");
     // do whatever you want start to do, usually setup stuff 
 
 
@@ -88,7 +88,7 @@ class ScrollingStage extends Thread {
         // todo: handle exceptions
       }
     }
-    System.out.println("ScrollingStage " + id + " Thread is done.");
+    System.out.println("ScrollingNote " + id + " Thread is done.");
   }
 
   // quits the thread

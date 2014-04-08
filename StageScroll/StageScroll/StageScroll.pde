@@ -17,10 +17,3 @@ void draw() {
   int a = myStage.getCount();
   println("Tick: " + a);
 }
-
-
-
-
-
-
-
