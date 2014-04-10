@@ -2,18 +2,15 @@ ScrollingStage myStage;
 
 void setup() {
   println("setup()");
-  
   // setup basic sketch settings
   size(1024, 768, P3D);
-  background(0);
-  
-  // instantiate + start the ScrollingStage
-  myStage = new ScrollingStage("myStage", 100);
-  myStage.start();
+  // start the stage
+  myStage = new ScrollingStage(width/2,height*.6,200,550);
 }
 
 void draw() {
-
-  int a = myStage.getCount();
-  println("Tick: " + a);
+	// clear out the background
+	background(0);
+	// update the stage
+	myStage.updateStage();
 }

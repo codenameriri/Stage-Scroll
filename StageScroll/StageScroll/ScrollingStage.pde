@@ -3,99 +3,67 @@
  * @version     1.0 
  * @since       1.0
  */
-class ScrollingStage extends Thread {
+class ScrollingStage {
 
-  boolean running;
-  int wait;
-  String id;
-  int count;
+  // properties
+  float locX;
+  float locY;
+  float stageWidth;
+  float stageHeight;
+  float stageBPM;
+  float stagePerspective = 50; // perspective to tilt the stage at
+
+  // store RGB color vals
+  // int[] rArr = [4];
+  // int[] gArr = [4];
+  // int[] bArr = [4];
 
   // Constructor
-  ScrollingStage(String s, int w) {
-    running = false; // disable running by default
-    id      = s;     // name of the instance
-    wait    = w;     // how long to wait before repeating thread loop
-    count   = 0;     // the number of times we've looped through the thread
-        
-    // setup the stage bg rect
-    drawStageBG();
+  ScrollingStage(float x, float y, float w, float h) {
+    // set init positioning
+    locX        = x;
+    locY        = y;
+    stageWidth  = w;
+    stageHeight = h;
 
-    // setup the smaller note hit points
-    for(int i=1; i<=5; i++){
-     drawHitZone(i);
-    }
+    // set color values
 
+
+   // setup the stage bg rect
+   this.drawStage();
   }
 
-  void drawStageBG(){
+  void drawStage(){
     rectMode(CENTER);
-    translate(512, 384, 0);
-    rotateX(PI/3);
-    fill(255, 255, 255, 100);
-    rect(0, 0, 512, 750);
+    rotateX(radians(stagePerspective));
+    fill(255,255,255, 50);
+    rect( locX, locY, stageWidth, stageHeight );
   }
-  
-  void drawHitZone(int column){
-    
-    // setup stroke
-    stroke(255,255,255,100);   
-    strokeWeight(3);
-    // setup fill
-    switch(column){
-      case 1:
-        fill(255,51,220, 99);
-        break;
-      case 2:
-        fill(239,130,47, 99);
-        break;
-      case 3:
-        fill(255,218,90, 99);
-        break;
-      case 4:
-        fill(192,255,74, 99);
-        break;
-      case 5:
-        fill(13,255,232,99);
-        break;
+
+  void drawHitzones(){
+    rectMode(CENTER);
+    //rotateX(radians(stagePerspective));
+    for( int i=0; i<4; i++ ){
+      fill(255,34,184, 50);
+      rect( 0, 0, 100, 100);
     }
-    // draw rect
-    rect(column*100-300, 320, 80, 80);
   }
 
-  int getCount() {
-    return count;
+  void updateStage(){
+    // TODO: draw the animated background
+    // drawBackground();
+    // redraw the stage background
+    drawStage();
+    // draw the hit zones for the notes
+    drawHitzones();
+    // TODO: redraw the notes
+    // drawNotes();
+
   }
 
-  // overriding default "start()"
-  void start() {
-    running = true;
-    println("ScrollingStage::"+this.id+ " has started. executing every " + wait + "ms");
-    // do whatever you want start to do, usually setup stuff 
+  // void drawHitZone(int column){
+  //   // draw rect
+  //   rect(column*100-300, 320, 80, 80);
+  // }
 
-
-    // call this last
-    super.start();
-  }
-
-  void run() {
-    while (running) {
-      // do whatever you want while going through this particular loop
-      count++;
-      try {
-        sleep((long)(wait));
-      } 
-      catch(Exception e) {
-        // todo: handle exceptions
-      }
-    }
-    System.out.println("ScrollingStage " + id + " Thread is done.");
-  }
-
-  // quits the thread
-  void quit() {
-    System.out.println( "Quitting.." );
-    running = false;
-    interrupt();
-  }
 }
-
