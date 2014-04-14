@@ -13,10 +13,9 @@ class ScrollingStage {
   float stageBPM;
   float stagePerspective = 50; // perspective to tilt the stage at
 
-  // store RGB color vals
-  // int[] rArr = [4];
-  // int[] gArr = [4];
-  // int[] bArr = [4];
+  // properties for hitzones 
+  int numHitzones = 5;
+  Hitzone[] hitzoneCollection;
 
   // Constructor
   ScrollingStage(float x, float y, float w, float h) {
@@ -26,44 +25,33 @@ class ScrollingStage {
     stageWidth  = w;
     stageHeight = h;
 
-    // set color values
-
+    // setup hitzone container
+    hitzoneCollection = new Hitzone[numHitzones];
 
    // setup the stage bg rect
    this.drawStage();
-  }
 
-  void drawStage(){
-    rectMode(CENTER);
-    rotateX(radians(stagePerspective));
-    fill(255,255,255, 50);
-    rect( locX, locY, stageWidth, stageHeight );
-  }
-
-  void drawHitzones(){
-    rectMode(CENTER);
-    //rotateX(radians(stagePerspective));
-    for( int i=0; i<4; i++ ){
-      fill(255,34,184, 50);
-      rect( 0, 0, 100, 100);
+    // Spawn the hitzone objects, pass in their column, store in the hitzone collection.
+    // also, draw the hitzone 
+    for(int i=0; i<numHitzones; i++){
+      hitzoneCollection[i] = new Hitzone(i, stagePerspective);
     }
   }
 
+  void drawStage(){
+    fill(100);
+    rect( locX, locY, stageWidth, stageHeight );
+  }
+
+
   void updateStage(){
-    // TODO: draw the animated background
-    // drawBackground();
     // redraw the stage background
     drawStage();
     // draw the hit zones for the notes
-    drawHitzones();
-    // TODO: redraw the notes
-    // drawNotes();
-
+    for( Hitzone i : hitzoneCollection ){
+      i.updateHitzone();
+      i.drawHitzone();
+    }
   }
-
-  // void drawHitZone(int column){
-  //   // draw rect
-  //   rect(column*100-300, 320, 80, 80);
-  // }
 
 }
