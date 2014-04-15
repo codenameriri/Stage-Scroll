@@ -31,16 +31,17 @@ class ScrollingStage {
    // setup the stage bg rect
    this.drawStage();
 
-    // Spawn the hitzone objects, pass in their column, store in the hitzone collection.
-    // also, draw the hitzone 
+    // Spawn the hitzone objects, pass in column, store in hitzone collection.
     for(int i=0; i<numHitzones; i++){
-      hitzoneCollection[i] = new Hitzone(i, stagePerspective);
+      hitzoneCollection[i] = new Hitzone(i, stagePerspective, stageWidth);
     }
   }
 
   void drawStage(){
+    pushMatrix();
     fill(100);
     rect( locX, locY, stageWidth, stageHeight );
+    popMatrix();
   }
 
 
@@ -50,7 +51,6 @@ class ScrollingStage {
     // draw the hit zones for the notes
     for( Hitzone i : hitzoneCollection ){
       i.updateHitzone();
-      i.drawHitzone();
     }
   }
 

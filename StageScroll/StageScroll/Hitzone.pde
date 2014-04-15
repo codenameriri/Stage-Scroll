@@ -6,68 +6,73 @@ class Hitzone
    int y;
    int w;
    int h;
+   // hitzone props
+   color hitzoneColor;     // where we store the RGB of this hitzone
+   PShape hitzoneShape;    // graphic object
+
+   // stage props
    float stagePerspective; // degrees the stage is tilted so we can match it
-  
-   color zoneColor; // where we store the RGB of this hitzone
 
   // Constructor 
-  Hitzone( int column, float persp )
+  Hitzone( int column, float persp, float stageWidth )
   {   
-    // store the column of this hitzone -- 0-4
     colNum = column;
-    this.x = 430 + (colNum * 40);
-    this.y = height - 100;
     this.w = 30;
     this.h = 30;
+    this.x = stageWidth / colNum + this.w;
+    this.y = height-120;    
     this.stagePerspective = persp;
+    this.stageWidth = stageWidth;
 
-    // set the hitzone color dependant on 
+    // set the hitzone color dependant on colNum
     switch(colNum){
-      case 0: zoneColor = color(255, 34, 184); break; // pink
-      case 1: zoneColor = color(240, 133, 46); break; // orange 
-      case 2: zoneColor = color(255, 220, 73); break; // yellow
-      case 3: zoneColor = color(16, 255, 160); break; // green
-      case 4: zoneColor = color(13, 255, 234); break; // blue
+      case 0: hitzoneColor = color(255, 34, 184); break; // pink
+      case 1: hitzoneColor = color(240, 133, 46); break; // orange 
+      case 2: hitzoneColor = color(255, 220, 73); break; // yellow
+      case 3: hitzoneColor = color(16, 255, 160); break; // green
+      case 4: hitzoneColor = color(13, 255, 234); break; // blue
     }
 
     println("Column#: " + colNum + "| X: " + this.x + " | Y: " + this.y);
+
+    // create the shape and set its fill
+    hitzoneShape = createShape(RECT, this.x, this.y, this.w, this.h);
+    hitzoneShape.setFill(hitzoneColor);
   }
    
    
   void updateHitzone()
   {
-    // if something is within bounds of the hitzone, change its color
-    if( pointRect( mouseX, mouseY, this.x-430, this.y-100, this.w, this.h ) ){
-      println("hitting colNum:" + colNum);
+    this.display();
+
+    int mx = mouseX;
+    int my = mouseY;
+    int bufferSpace = 10;
+
+    if( (mx >= this.x-this.w/2+bufferSpace) && 
+        (mx <= this.x+this.w/2+bufferSpace) && 
+        (my >= this.y-this.h/2+bufferSpace) && 
+        (my <= this.y+this.h/2+bufferSpace) ){
+      println("within bounds of colNum:" + colNum);
+      // change fill color
+      hitzoneShape.setFill(#FFFFFF);
+    }else{
+      //restore hitzone color
+      hitzoneShape.setFill(hitzoneColor);
     }
-
   }
 
-  void drawHitzone()
-  {
-    fill( zoneColor );
-    rect(this.x, this.y, this.h, this.w);
+  // checks for collisions between 2 shapes 
+  boolean checkCollisions(PShape s1, PShape s2){
+    // TODO
+    return true;
   }
 
-
-/* 
-POINT/RECT COLLISION FUNCTION
-Takes 6 arguments:
-  + x,y position of point 1 - in this case "you"
-  + x,y position of point 2 - in this case the static rectangle
-  + width and height of rectangle
-*/
-boolean pointRect(int px, int py, int rx, int ry, int rw, int rh) {
-  
-  // test for collision
-  if (px >= rx-rw/2 && px <= rx+rw/2 && py >= ry-rh/2 && py <= ry+rh/2) {
-    return true;    // if a hit, return true
+  void display(){
+    pushMatrix();
+    translate(0,0,1);
+    rectMode(CORNER);
+    shape( hitzoneShape );
+    popMatrix();
   }
-  else {            // if not, return false
-    return false;
-  }
-}
-
-
-
 }
