@@ -6,52 +6,46 @@
 class ScrollingStage {
 
   // properties
-  float locX;
-  float locY;
-  float stageWidth;
-  float stageHeight;
-  float stageBPM;
-  float stagePerspective = 50; // perspective to tilt the stage at
-
-  // properties for hitzones 
-  int numHitzones = 5;
-  Hitzone[] hitzoneCollection;
+  float x;
+  float y;
+  float w;
+  float h;
+  float bpm;
+  
+  // image settings
+  PImage stageImg;
+  PImage overlayImg;
 
   // Constructor
-  ScrollingStage(float x, float y, float w, float h) {
-    // set init positioning
-    locX        = x;
-    locY        = y;
-    stageWidth  = w;
-    stageHeight = h;
+  ScrollingStage(float w) {
+    this.w = w - 200;
 
-    // setup hitzone container
-    hitzoneCollection = new Hitzone[numHitzones];
-
-   // setup the stage bg rect
-   this.drawStage();
-
-    // Spawn the hitzone objects, pass in column, store in hitzone collection.
-    for(int i=0; i<numHitzones; i++){
-      hitzoneCollection[i] = new Hitzone(i, stagePerspective, stageWidth);
-    }
+    // calculate the width to display the image
+    this.h = this.w * 0.58; //0.5827;    
+    
+    /* load images */
+    // stageBG
+    stageImg = loadImage("stage.png");
+    // stage overlaay
+    overlayImg = loadImage("focal_point.png");
+    
   }
 
-  void drawStage(){
-    pushMatrix();
-    fill(100);
-    rect( locX, locY, stageWidth, stageHeight );
-    popMatrix();
+  void draw(){
+    // draw the stage background 
+    image(stageImg, -40, 10, this.w, this.h);
+    
+    // draw the stage overlay
+    blendMode(MULTIPLY);
+    image(overlayImg, 50, -450, 1777/2, 1777/2);
+    blendMode(BLEND);
+    
+    // draw the hitzones
   }
 
 
-  void updateStage(){
-    // redraw the stage background
-    drawStage();
-    // draw the hit zones for the notes
-    for( Hitzone i : hitzoneCollection ){
-      i.updateHitzone();
-    }
+  void update(){
+
   }
 
 }

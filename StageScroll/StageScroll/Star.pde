@@ -52,12 +52,13 @@ class Star
     }
   }
    
-  void display()
+  void draw()
   {
     float star_color = 255 - z * 255 / 1000;
+    pushMatrix();
+    rotateX(radians(45));
     fill(star_color);
-    rotateX(radians(myStage.stagePerspective));
     ellipse(screen_x, screen_y, screen_diameter, screen_diameter);  
-  	rotateX(radians(myStage.stagePerspective*-1));
+    popMatrix();
   }
 }

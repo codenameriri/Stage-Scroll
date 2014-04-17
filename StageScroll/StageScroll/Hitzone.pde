@@ -1,3 +1,4 @@
+/*
 class Hitzone
 {
   // props   
@@ -76,3 +77,4 @@ class Hitzone
     popMatrix();
   }
 }
+*/
