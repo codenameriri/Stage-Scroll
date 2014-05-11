@@ -37,6 +37,9 @@ class LoaderThread extends Thread {
   // COLLECTIONS
   Star[] starCollection;
 
+  /**
+   * LoaderThread constructor
+   */
   LoaderThread( ScrollingStage p ){
     parent           = p;
     active           = false;
@@ -45,6 +48,9 @@ class LoaderThread extends Thread {
     statusText       = "Initializing..";
   }
 
+  /**
+   * starts the thread loop
+   */
   void start(){
     println("LoaderThread::start();");
     statusText = "Loader running..";
@@ -52,6 +58,9 @@ class LoaderThread extends Thread {
     super.start();
   }
 
+  /**
+   * if
+   */
   void run(){
     while( true ){
       if( active ){

@@ -116,6 +116,9 @@ class ScrollingStage {
    * Draw Methods      *
    ********************/
 
+  /**
+   * Main scrollingStage draw function
+   */
   void draw(){
     if( this.doneLoading == false ){
       drawLoadingScreen(); // show loading screen
@@ -124,6 +127,10 @@ class ScrollingStage {
     }
   } // end draw();
 
+  /**
+    called by main draw when assets are fully loaded. Contains draw functions
+    for all stage components.
+   */
   void drawStageElements(){
     imageMode(CENTER);
     drawStageBackground();
@@ -135,12 +142,16 @@ class ScrollingStage {
     drawStageFocal();
     drawStageVignette();
     imageMode(CORNER);
+    // only draw note success text if true
     if( showSuccessTxt ){
       textFeed.draw();
     }
     drawScoreText();
   }
 
+  /**
+   * Called in the main draw loop. Draws the loading screen.
+   */
   void drawLoadingScreen(){
     imageMode(CENTER);
     textAlign(CENTER);
@@ -152,18 +163,27 @@ class ScrollingStage {
     imageMode(CORNER);
   }
 
+  /**
+   * Draws the background of the stage.
+   */
   void drawStageBackground(){
     tint(255,230);
     image( stageBG, this.x, this.y+BG_Y_PADDING, this.w, this.h );
     tint(255,255);
   }
 
+  /**
+   * Draws the star particle effects
+   */
   void drawStageStars(){
     for(Star i:starCollection){
       i.draw();
     }
   }
 
+  /**
+   * Draws the vignette on the stage edges
+   */
   void drawStageVignette(){
     imageMode(CORNER);
     tint(255, focusVignAlpha);
@@ -174,15 +194,24 @@ class ScrollingStage {
     imageMode(CENTER);
   }
 
+  /**
+   * draws the stage foreground animations
+   */
   void drawStageForeground(){
     image(stageSequence[stageIndex], this.x, this.y, this.w, this.h);
   }
 
+  /**
+   * Draws the stage grid animation
+   */
   void drawStageGrid(){
     image(gridSequence[gridIndex],
             this.x, this.y+GRID_Y_PADDING, this.w, this.h+GRID_H_PADDING);
   }
 
+  /**
+   * Draws the stage falling note animations
+   */
   void drawStageNotes(){
     // draw the active note frame
     float xVal = this.x;
@@ -201,17 +230,28 @@ class ScrollingStage {
 
   } // end drawStageNotes();
 
+  /**
+   * Draws the stage falling note hitzones
+   */
   void drawStageHitzone(){
     // draw the hitzone
     if( activeHitzone > 0 ){
-      image(hitzoneSequence[activeHitzone-1], this.x, this.y+GRID_Y_PADDING, this.w, this.h+GRID_H_PADDING);
+      image(hitzoneSequence[activeHitzone-1], this.x, this.y+GRID_Y_PADDING,
+        this.w, this.h+GRID_H_PADDING);
     }
   }
 
+  /**
+   * draws the black distanced focal point on the stage. Gives the notes the
+   * appearance of coming out of "nothing".
+   */
   void drawStageFocal(){
     image(focal, this.x, 100, this.w, this.h);
   }
 
+  /**
+   * draws the score text in the upper corner of the screen.
+   */
   void drawScoreText(){
     String scoreStr = String.format("%04d", score);
     textFont(gothamBold, 30);
@@ -227,7 +267,9 @@ class ScrollingStage {
   /*********************
    * Update Methods    *
    ********************/
-
+   /**
+    * Main update method for ScrollingStage()
+    */
   void update(){
     if( this.doneLoading == true ){
       updateStage();
@@ -237,6 +279,9 @@ class ScrollingStage {
     }
   }
 
+  /**
+   * loops through our star array and updates each particle.
+   */
   void updateStars(){
     // update all our stars
     for( Star i:starCollection ){
@@ -244,6 +289,10 @@ class ScrollingStage {
     }
   }
 
+  /**
+   * iterates what frame we are on for the stage animation.
+   * Loops to first frame.
+   */
   void updateStage(){
     // increment stage animation sequence
     if( stageIndex >= stageSequence.length-1 ){
@@ -253,6 +302,10 @@ class ScrollingStage {
     }
   }
 
+  /**
+   * iterates what frame we are on for the grid animation.
+   * Loops to first frame.
+   */
   void updateGrid(){
     // increment grid animation sequence
     if( gridIndex >= gridSequence.length-1 ){
@@ -262,6 +315,9 @@ class ScrollingStage {
     }
   }
 
+  /**
+   * updates the alpha value of the vignette depending on the current hitzone.
+   */
   void updateVignette(){
     // calculate the maxAlpha value for each vignette, based on active hitzone.
     switch (activeHitzone) {

@@ -1,31 +1,33 @@
-// required for @Mia's text animaitons
-import de.looksgood.ani.*;
-// set to whatever the pixel height of @Brennan's widgets
-final int WIDGET_HEIGHT = 40;
-// define our stage
-ScrollingStage myStage;
+import de.looksgood.ani.*;    // required for @Mia's text animaitons
+final int WIDGET_HEIGHT = 40; // pixel height of @Brennan's widgets
+ScrollingStage myStage;       // define our stage
 
+/**
+ * Main Stage Setup
+ */
 void setup() {
+  // stage settings
   size(1024, 768, P3D);
   frameRate(30);
   smooth();
-  // required for @Mia's text animations
-  Ani.init(this);
+  Ani.init(this); // required for @Mia's text animations
 
-  // instantiate our stage. x, y, width, height. drawing done from
-  // center origin of images.
+  /* instantiate our stage. x, y, width, height. drawing done from
+    center origin of images.*/
   myStage = new ScrollingStage(width/2, height/2-WIDGET_HEIGHT, width, height);
 }
 
 
-
+/*
+  Main Stage Draw
+ */
 void draw() {
   // reset frame
 	background(0);
 	smooth();
   noStroke();
 
-  // each draw loop, you must call the update() then the draw() for the stage.
+  /* must call stage update and draw each cycle of Main stage */
   myStage.update();
   myStage.draw();
 }
@@ -38,9 +40,9 @@ void draw() {
   columnNum (1-5).
 */
 void mouseReleased(){
-  // this prevents spawning notes before the stage is ready.
+  // prevents spawning notes before the stage is ready.
   if( myStage.doneLoading ){
-    // activeNote = 0 means there is no currently active note, so it's safe to spawn a new one.
+    // activeNote = 0 means no currently active note, safe to spawn a new one.
     if( myStage.activeNote == 0 ){
       myStage.spawnNote( round(random(1,5)) );
     }else{
